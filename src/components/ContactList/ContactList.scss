@@ -1,0 +1,12 @@
+.contact-list{
+  display:table;
+  li{
+    display: table-row;
+    margin:5px;
+    > *{
+      display: table-cell;
+      padding:5px;
+      margin-bottom: 10px;
+    }
+  }
+}
