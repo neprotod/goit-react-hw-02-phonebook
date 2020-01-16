@@ -1,8 +1,23 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Joi from '@hapi/joi';
 
 import './ContactForm.scss';
+
+const schema = Joi.object({
+  name: Joi.string()
+    .alphanum()
+    .min(3)
+    .max(30)
+    .required(),
+  number: Joi.string()
+    .pattern(/^([0-9]+?[ -]?)+?[0-9]$/)
+    .message(
+      "Number isn't correct, please use only number and separator space or -",
+    )
+    .required(),
+});
 
 export default class ContactForm extends Component {
   static propTypes = {
@@ -39,6 +54,11 @@ export default class ContactForm extends Component {
     e.preventDefault();
 
     if (!name || !number) {
+      return false;
+    }
+    const result = schema.validate({ name, number });
+    if (result.error) {
+      alert(result.error.message);
       return false;
     }
 
